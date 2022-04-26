@@ -4,7 +4,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskDemo import app, db, bcrypt
 from flaskDemo.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, DeptForm,DeptUpdateForm, AssignForm
-from flaskDemo.models import User, Post,Department, Dependent, Dept_Locations, Employee, Project, Works_On
+from flaskDemo.models import User, Post, Matches, Team, Opponent, Sport
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 
@@ -14,9 +14,9 @@ from datetime import datetime
 def home():
     #results= Works_On.query.with_entities(Works_On.essn).all()
     #return render_template('assign_home.html', joined_m_n = results)
-    results2 = Works_On.query.join(Employee,Works_On.essn == Employee.ssn) \
-               .add_columns(Employee.fname) \
-               .join(Project, Project.pnumber == Works_On.pno).add_columns(Project.pnumber)
+    results2 = Matches.query.join(Team,Matches.teamName == Team.teamName) \
+               .add_columns(Team.teamName) \
+               .join(Opponent, Opponent.oppName == Matches.oppName).add_columns(Opponent.oppName)
     return render_template('assign_home.html', title='Join',joined_m_n=results2)
 
    

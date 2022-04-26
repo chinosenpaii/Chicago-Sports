@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flaskDemo import db
-from flaskDemo.models import User, Department, getDepartment, getDepartmentFactory, Employee, Project, Works_On
+from flaskDemo.models import User, Matches, getMatches, getDepartmentFactory, Team, Opponent, Sport
 from wtforms.fields import DateField
 
 ssns = Department.query.with_entities(Department.mgr_ssn).distinct()

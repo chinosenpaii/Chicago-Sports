@@ -40,32 +40,33 @@ class Post(db.Model):
 
 
 
-class Dependent(db.Model):
-    __table__ = db.Model.metadata.tables['dependent']
+class Matches(db.Model):
+    __table__ = db.Model.metadata.tables['matches']
     
-class Department(db.Model):
-    __table__ = db.Model.metadata.tables['department']
+class Team(db.Model):
+    __table__ = db.Model.metadata.tables['team']
 
 # used for query_factory
-def getDepartment(columns=None):
-    u = Department.query
+def getMatches(columns=None):
+    u = Matches.query
     if columns:
         u = u.options(orm.load_only(*columns))
     return u
-
+'''
 def getDepartmentFactory(columns=None):
     return partial(getDepartment, columns=columns)
-
-class Dept_Locations(db.Model):
-    __table__ = db.Model.metadata.tables['dept_locations']
+'''
+class Opponent(db.Model):
+    __table__ = db.Model.metadata.tables['opponent']
     
-class Employee(db.Model):
-    __table__ = db.Model.metadata.tables['employee']
+class Sport(db.Model):
+    __table__ = db.Model.metadata.tables['sport']
+'''
 class Project(db.Model):
-    __table__ = db.Model.metadata.tables['project']
-class Works_On(db.Model):
-    __table__ = db.Model.metadata.tables['works_on']
-
+    __table__ = db.Model.metadata.tables['opponent']
+class Matches(db.Model):
+    __table__ = db.Model.metadata.tables['']
+'''
     
 
   
