@@ -131,9 +131,9 @@ def assign():
 
 
 @app.route("/matches/<teamName>/<oppName>")
-def assign(teamName, oppName):
+def match(teamName, oppName, sport):
     assign = Matches.query.get_or_404([teamName, oppName, sport])
-    return render_template('assign.html', title=str(assign.essn)+"_"+ str(assign.pno), assign=assign, now=datetime.utcnow())
+    return render_template('assign.html', title=str(match.teamName)+"_"+ str(match.oppName)+"_"+ str(match.sport), match=match, now=datetime.utcnow())
 
 
 @app.route("/match/<teamName>/<oppName>/<sport>/update", methods=['GET', 'POST'])
