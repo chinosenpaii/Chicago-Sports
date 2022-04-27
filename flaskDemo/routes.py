@@ -130,17 +130,17 @@ def assign():
     return render_template('assign_home.html', title='Assign Employee to Project', form=form)
 
 
-@app.route("/assign/<pno>/<essn>")
-def assign(pno, essn):
-    assign = Works_On.query.get_or_404([essn, pno])
+@app.route("/matches/<teamName>/<oppName>")
+def assign(teamName, oppName):
+    assign = Matches.query.get_or_404([teamName, oppName, sport])
     return render_template('assign.html', title=str(assign.essn)+"_"+ str(assign.pno), assign=assign, now=datetime.utcnow())
 
 
-@app.route("/assign/<essn>/<pno>/update", methods=['GET', 'POST'])
-def update_assign(essn, pno):
-    return "update page under construction"
-    assign = Works_On.query.get_or_404(essn, pno)
-    currentAssign = assign.dname
+@app.route("/match/<teamName>/<oppName>/<sport>/update", methods=['GET', 'POST'])
+def update_match(teamName, oppName, sport):
+    #return "update page under construction"
+    match = Matches.query.get_or_404(teamName, oppName, sport)
+    currentMatch = assign.dname
 
     form = DeptUpdateForm()
     if form.validate_on_submit():          # notice we are are not passing the dnumber from the form
@@ -149,7 +149,7 @@ def update_assign(essn, pno):
         dept.mgr_ssn=form.mgr_ssn.data
         dept.mgr_start=form.mgr_start.data
         db.session.commit()
-        flash('Your department has been updated!', 'success')
+        flash('Your Match has been updated!', 'success')
         return redirect(url_for('dept', dnumber=dnumber))
     elif request.method == 'GET':              # notice we are not passing the dnumber to the form
 
@@ -163,10 +163,10 @@ def update_assign(essn, pno):
 
 
 
-@app.route("/assign/<essn>/<pno>delete", methods=['POST'])
-def delete_assign(essn, pno):
-    assign = Works_On.query.get_or_404([essn, pno])
+@app.route("/matches/<teamName>/<oppName>/<sport>delete", methods=['POST'])
+def delete_match(teamName, oppName, sport):
+    assign = Matches.query.get_or_404([teamName, oppName, sport])
     db.session.delete(assign)
     db.session.commit()
-    flash('The assignment has been deleted!', 'success')
+    flash('The match has been deleted!', 'success')
     return redirect(url_for('home'))

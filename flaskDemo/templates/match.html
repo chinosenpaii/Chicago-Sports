@@ -4,7 +4,7 @@
 <!--    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/default.jpg')}}"> -->
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ assign.essn, assign.pno }}</a>
+        <a class="mr-2" href="#">{{ match.teamName, match.oppName, match.sport }}</a>
         <small class="text-muted">{{now.strftime('%A %B, %d %Y %H:%M:%S')}}</small>
 
           <div>
@@ -21,14 +21,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Delete Assignment?</h5>
+          <h5 class="modal-title" id="deleteModalLabel">Delete Match?</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form action="{{ url_for('delete_assign', pno=assign.pno, essn=assign.essn) }}" method="POST">
+          <form action="{{ url_for('delete_match', teamName=match.teamName, oppName=match.oppName, sport=match.sport) }}" method="POST">
             <input class="btn btn-danger" type="submit" value="Delete">
           </form>
         </div>
