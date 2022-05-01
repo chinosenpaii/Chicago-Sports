@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskDemo import app, db, bcrypt
-from flaskDemo.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, DeptForm,DeptUpdateForm, AssignForm
+from flaskDemo.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, MatchForm,MatchUpdateForm, AssignForm
 from flaskDemo.models import User, Post, Matches, Team, Opponent, Sport
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
@@ -26,7 +26,8 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
-
+#Might not need but might to fill in user data as a requirement
+'''
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -40,7 +41,7 @@ def register():
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
+'''
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -137,26 +138,37 @@ def match(teamName, oppName, sport):
 
 
 @app.route("/match/<teamName>/<oppName>/<sport>/update", methods=['GET', 'POST'])
+@login_required
 def update_match(teamName, oppName, sport):
     #return "update page under construction"
     match = Matches.query.get_or_404(teamName, oppName, sport)
-    currentMatch = assign.dname
-
-    form = DeptUpdateForm()
+    currentMatch = assign.matchID
+#matchID or teamName
+    form = MatchUpdateForm()
     if form.validate_on_submit():          # notice we are are not passing the dnumber from the form
-        if currentDept !=form.dname.data:
-            dept.dname=form.dname.data
-        dept.mgr_ssn=form.mgr_ssn.data
-        dept.mgr_start=form.mgr_start.data
+        if currentMatch !=form.matchID.data:
+            match.score=form.score.data
+        match.arena=form.arena.data
+        match.matchType=form.matchType.data
+        match.status=form.status.data 
+        match.date=form.date.data
+        match.teamName=form.teamName.data
+        match.oppName=form.oppName.data
+        match.sport=form.sport.data
         db.session.commit()
         flash('Your Match has been updated!', 'success')
-        return redirect(url_for('dept', dnumber=dnumber))
+        return redirect(url_for('match', matchID=matchID))
     elif request.method == 'GET':              # notice we are not passing the dnumber to the form
 
-        form.dnumber.data = dept.dnumber
-        form.dname.data = dept.dname
-        form.mgr_ssn.data = dept.mgr_ssn
-        form.mgr_start.data = dept.mgr_start
+        match.matchID=form.matchID.data
+        match.score=form.score.data
+        match.arena=form.arena.data
+        match.matchType=form.matchType.data
+        match.status=form.status.data 
+        match.date=form.date.data
+        match.teamName=form.teamName.data
+        match.oppName=form.oppName.data
+        match.sport=form.sport.data
     return render_template('create_dept.html', title='Update Department',
                            form=form, legend='Update Department')
 
@@ -164,6 +176,7 @@ def update_match(teamName, oppName, sport):
 
 
 @app.route("/matches/<teamName>/<oppName>/<sport>delete", methods=['POST'])
+@login_required
 def delete_match(teamName, oppName, sport):
     assign = Matches.query.get_or_404([teamName, oppName, sport])
     db.session.delete(assign)

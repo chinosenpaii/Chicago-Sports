@@ -127,10 +127,10 @@ class PostForm(FlaskForm):
     submit = SubmitField('Post')
 
     
-class DeptUpdateForm(FlaskForm):
+class MatchUpdateForm(FlaskForm):
 
 #    dnumber=IntegerField('Department Number', validators=[DataRequired()])
-    dnumber = HiddenField("")
+    matchID = HiddenField("")
 
     dname=StringField('Department Name:', validators=[DataRequired(),Length(max=15)])
 #  Commented out using a text field, validated with a Regexp.  That also works, but a hassle to enter ssn.
@@ -156,13 +156,13 @@ class DeptUpdateForm(FlaskForm):
              raise ValidationError('That department name is already being used. Please choose a different name.')
 
 
-class DeptForm(DeptUpdateForm):
+class MatchForm(MatchUpdateForm):
 
-    dnumber=IntegerField('Department Number', validators=[DataRequired()])
-    submit = SubmitField('Add this department')
+    matchID=IntegerField('Match ID', validators=[DataRequired()])
+    submit = SubmitField('Add this match')
 
-    def validate_dnumber(self, dnumber):    #because dnumber is primary key and should be unique
-        dept = Department.query.filter_by(dnumber=dnumber.data).first()
-        if dept:
-            raise ValidationError('That department number is taken. Please choose a different one.')
+    def validate_matchID(self, matchID):    #because dnumber is primary key and should be unique
+        match = Matches.query.filter_by(matchID=matchID.data).first()
+        if match:
+            raise ValidationError('That match ID is taken. Please choose a different one.')
 
