@@ -5,9 +5,9 @@
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ row }}</a>		  
-              <small class="text-muted">{{ row['teamName'] }}  {{ row['oppName'] } {{ row ['sport']}}}</small>		  
+              <small class="text-muted">{{ row['matchID'] }}</small>		  
             </div>
-			<h2><a class="article-title" href="{{ url_for('match', teamName=row.teamName, oppName=row.oppName, sport=row.sport) }}">{{ row.essn, row.pno }}</a></h2>
+			<h2><a class="article-title" href="{{ url_for('match', matchID=row.matchID) }}">{{ row.essn, row.pno }}</a></h2>
            
           </div>
         </article>
