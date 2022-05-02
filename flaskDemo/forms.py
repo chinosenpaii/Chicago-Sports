@@ -5,10 +5,10 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flaskDemo import db
-from flaskDemo.models import User, Matches, getMatches, getDepartmentFactory, Team, Opponent, Sport
+from flaskDemo.models import User, Matches, getMatches, getMatchesFactory, Team, Opponent, Sport
 from wtforms.fields import DateField
 
-ssns = Department.query.with_entities(Department.mgr_ssn).distinct()
+ssns = Matches.query.with_entities(Matches.teamName).distinct()
 #  or could have used ssns = db.session.query(Department.mgr_ssn).distinct()
 # for that way, we would have imported db from flaskDemo, see above
 
@@ -17,7 +17,7 @@ results=list()
 for row in ssns:
     rowDict=row._asdict()
     results.append(rowDict)
-myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
+myChoices = [(row['teamName'],row['teamName']) for row in results]
 regex1='^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])'
 regex2='|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$'
 regex=regex1 + regex2
@@ -132,28 +132,33 @@ class MatchUpdateForm(FlaskForm):
 #    dnumber=IntegerField('Department Number', validators=[DataRequired()])
     matchID = HiddenField("")
 
-    dname=StringField('Department Name:', validators=[DataRequired(),Length(max=15)])
+    matchID=StringField('Match ID:', validators=[DataRequired(),Length(max=15)])
 #  Commented out using a text field, validated with a Regexp.  That also works, but a hassle to enter ssn.
 #    mgr_ssn = StringField("Manager's SSN", validators=[DataRequired(),Regexp('^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$', message="Please enter 9 digits for a social security.")])
 
 #  One of many ways to use SelectField or QuerySelectField.  Lots of issues using those fields!!
-    mgr_ssn = SelectField("Manager's SSN", choices=myChoices)  # myChoices defined at top
-    
+    score = SelectField("Match Score", choices=myChoices)  # myChoices defined at top
+    arena = SelectField("Arena", choices=myChoices)
+    matchType = SelectField("Match Type", choices=myChoices)
+    status = SelectField("Status", choices=myChoices)
+    teamName = SelectField("Team Name", choices=myChoices)
+    oppName = SelectField("Opponents Name", choices=myChoices)
+    sport = SelectField("Sport", choices=myChoices)
 # the regexp works, and even gives an error message
 #    mgr_start=DateField("Manager's Start Date:  yyyy-mm-dd",validators=[Regexp(regex)])
 #    mgr_start = DateField("Manager's Start Date")
 
 #    mgr_start=DateField("Manager's Start Date", format='%Y-%m-%d')
-    mgr_start = DateField("Manager's start date:", format='%Y-%m-%d')  # This is using the html5 date picker (imported)
-    submit = SubmitField('Update this department')
+    date = DateField("Match Date:", format='%Y-%m-%d')  # This is using the html5 date picker (imported)
+    submit = SubmitField('Update this match')
 
 
 # got rid of def validate_dnumber
 
-    def validate_dname(self, dname):    # apparently in the company DB, dname is specified as unique
-         dept = Department.query.filter_by(dname=dname.data).first()
-         if dept and (str(dept.dnumber) != str(self.dnumber.data)):
-             raise ValidationError('That department name is already being used. Please choose a different name.')
+    def validate_dname(self, matchID):    # apparently in the company DB, dname is specified as unique
+         match = Matches.query.filter_by(matchID=matchID.data).first()
+         if match and (str(match.matchID) != str(self.matchID.data)):
+             raise ValidationError('That match ID is already being used. Please choose a different ID.')
 
 
 class MatchForm(MatchUpdateForm):

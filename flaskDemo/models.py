@@ -42,20 +42,27 @@ class Post(db.Model):
 
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['matches']
-    
+
+'''    
 class Team(db.Model):
     __table__ = db.Model.metadata.tables['team']
-
+'''
 # used for query_factory
 def getMatches(columns=None):
     u = Matches.query
     if columns:
         u = u.options(orm.load_only(*columns))
     return u
+
+def getMatchesFactory(columns=None):
+    return partial(getMatches, columns=columns)
 '''
-def getDepartmentFactory(columns=None):
-    return partial(getDepartment, columns=columns)
+class Matches(db.Model):
+    __table__ = db.Model.metadata.tables['matches']
 '''
+class Team(db.Model):
+    __table__ = db.Model.metadata.tables['team']
+
 class Opponent(db.Model):
     __table__ = db.Model.metadata.tables['opponent']
     

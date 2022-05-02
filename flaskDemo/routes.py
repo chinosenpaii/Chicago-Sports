@@ -13,7 +13,10 @@ from datetime import datetime
 @app.route("/")
 @app.route("/home")
 def home():
+    '''
     results= Matches.query.with_entities(Matches.matchID).all()
+    '''
+    results= Matches.query.all()
     return render_template('assign_home.html', joined_m_n = results)
     results2 = Matches.query.join(Team,Matches.teamName == Team.teamName) \
                .add_columns(Team.teamName) \
@@ -100,16 +103,17 @@ def account():
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
 
-@app.route("/assign/<matchID>/new", methods=['GET', 'POST'])
+@app.route("/match/<matchID>/new", methods=['GET', 'POST'])
+@login_required
 def new_match(matchID):
-    form = DeptForm()
+    form = MatchForm()
     if form.validate_on_submit():
         match = Matches(score=form.score.data, arena=form.arena.data, matchType=form.matchType.data, status=form.status.data, date=form.date.data, teamName=form.teamName.data, oppName=form.oppName.data, sport=form.sport.data)
-        db.session.add(assign)
+        db.session.add(match)
         db.session.commit()
         flash('You have added a new match!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_dept.html', title='New Match',
+    return render_template('create_match.html', title='New Match',
                            form=form, legend='New Match')
 '''
 @app.route("/assign/<pno>/<essn>/new", methods=['GET', 'POST'])
@@ -132,10 +136,11 @@ def assign():
 '''
 
 @app.route("/matches/<matchID>")
+@login_required
 def match(matchID):
-    assign = Matches.query.get_or_404([matchID])
+    match = Matches.query.get_or_404([matchID])
     #return render_template('assign.html', title=str(match.teamName)+"_"+ str(match.oppName)+"_"+ str(match.sport), match=match, now=datetime.utcnow())
-    return render_template('assign.html', title=match.matchID, match=match, now=datetime.utcnow())
+    return render_template('match.html', title=match.matchID, match=match, now=datetime.utcnow())
 
 #Update
 @app.route("/match/<matchID>/update", methods=['GET', 'POST'])
@@ -168,7 +173,7 @@ def update_match(matchID):
         match.teamName=form.teamName.data
         match.oppName=form.oppName.data
         match.sport=form.sport.data
-    return render_template('create_dept.html', title='Update Match',
+    return render_template('create_match.html', title='Update Match',
                            form=form, legend='Update Match')
 
 
@@ -177,7 +182,7 @@ def update_match(matchID):
 @app.route("/matches/<matchID>/delete", methods=['POST'])
 @login_required
 def delete_match(matchID):
-    match = Matches.query.get_or_404([matchID])
+    match = Matches.query.get_or_404(matchID)
     db.session.delete(match)
     db.session.commit()
     flash('The match has been deleted!', 'success')
