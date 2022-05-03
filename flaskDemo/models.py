@@ -37,9 +37,6 @@ class Post(db.Model):
 
 
 
-
-
-
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['Matches']
 
@@ -54,12 +51,10 @@ def getMatches(columns=None):
         u = u.options(orm.load_only(*columns))
     return u
 
+
 def getMatchesFactory(columns=None):
     return partial(getMatches, columns=columns)
-'''
-class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['matches']
-'''
+
 class Team(db.Model):
     __table__ = db.Model.metadata.tables['Team']
 
