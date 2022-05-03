@@ -37,16 +37,10 @@ class Post(db.Model):
 
 
 
-
-
-
 class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['matches']
+    __table__ = db.Model.metadata.tables['Matches']
 
-'''    
-class Team(db.Model):
-    __table__ = db.Model.metadata.tables['team']
-'''
+
 # used for query_factory
 def getMatches(columns=None):
     u = Matches.query
@@ -54,26 +48,18 @@ def getMatches(columns=None):
         u = u.options(orm.load_only(*columns))
     return u
 
+
 def getMatchesFactory(columns=None):
     return partial(getMatches, columns=columns)
-'''
-class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['matches']
-'''
+
 class Team(db.Model):
-    __table__ = db.Model.metadata.tables['team']
+    __table__ = db.Model.metadata.tables['Team']
 
 class Opponent(db.Model):
-    __table__ = db.Model.metadata.tables['opponent']
+    __table__ = db.Model.metadata.tables['Opponent']
     
 class Sport(db.Model):
-    __table__ = db.Model.metadata.tables['sport']
-'''
-class Project(db.Model):
-    __table__ = db.Model.metadata.tables['opponent']
-class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['']
-'''
-    
+    __table__ = db.Model.metadata.tables['Sport']
+
 
   
