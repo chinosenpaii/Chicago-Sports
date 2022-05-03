@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for row in joined_m_n %}
+    {% for row in outString %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ row }}</a>		  
-              <small class="text-muted">{{ row['matchID'] }}</small>		  
+              <small class="text-muted">{{ row['matchID'] }} {{ row['teamName'] }}</small>		  
             </div>
-			<h2><a class="article-title" href="{{ url_for('match', matchID=row.matchID) }}">{{ row.matchID }}</a></h2>
+			<h2><a class="article-title" href="{{ url_for('match', matchID=row.matchID) }}">{{ row.teamName }}</a></h2>
            
           </div>
         </article>

@@ -17,7 +17,7 @@ def home():
     results= Matches.query.with_entities(Matches.matchID).all()
     '''
     results= Matches.query.all()
-    return render_template('assign_home.html', joined_m_n = results)
+    return render_template('assign_home.html', outString = results)
     results2 = Matches.query.join(Team,Matches.teamName == Team.teamName) \
                .add_columns(Team.teamName) \
                .join(Opponent, Opponent.oppName == Matches.oppName).add_columns(Opponent.oppName)
@@ -31,7 +31,6 @@ def about():
     return render_template('about.html', title='About')
 
 #Might not need but might to fill in user data as a requirement
-'''
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -45,7 +44,6 @@ def register():
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-'''
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -103,9 +101,9 @@ def account():
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
 
-@app.route("/match/<matchID>/new", methods=['GET', 'POST'])
+@app.route("/match/new", methods=['GET', 'POST'])
 @login_required
-def new_match(matchID):
+def new_match():
     form = MatchForm()
     if form.validate_on_submit():
         match = Matches(score=form.score.data, arena=form.arena.data, matchType=form.matchType.data, status=form.status.data, date=form.date.data, teamName=form.teamName.data, oppName=form.oppName.data, sport=form.sport.data)

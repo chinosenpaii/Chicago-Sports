@@ -41,11 +41,11 @@ class Post(db.Model):
 
 
 class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['matches']
+    __table__ = db.Model.metadata.tables['Matches']
 
 '''    
 class Team(db.Model):
-    __table__ = db.Model.metadata.tables['team']
+    __table__ = db.Model.metadata.tables['Team']
 '''
 # used for query_factory
 def getMatches(columns=None):
@@ -61,13 +61,13 @@ class Matches(db.Model):
     __table__ = db.Model.metadata.tables['matches']
 '''
 class Team(db.Model):
-    __table__ = db.Model.metadata.tables['team']
+    __table__ = db.Model.metadata.tables['Team']
 
 class Opponent(db.Model):
-    __table__ = db.Model.metadata.tables['opponent']
+    __table__ = db.Model.metadata.tables['Opponent']
     
 class Sport(db.Model):
-    __table__ = db.Model.metadata.tables['sport']
+    __table__ = db.Model.metadata.tables['Sport']
 '''
 class Project(db.Model):
     __table__ = db.Model.metadata.tables['opponent']
