@@ -17,7 +17,7 @@ def home():
     results= Matches.query.with_entities(Matches.matchID).all()
     '''
     results= Matches.query.all()
-    return render_template('assign_home.html', outString = results)
+    return render_template('match_home.html', outString = results)
     results2 = Matches.query.join(Team,Matches.teamName == Team.teamName) \
                .add_columns(Team.teamName) \
                .join(Opponent, Opponent.oppName == Matches.oppName).add_columns(Opponent.oppName)
