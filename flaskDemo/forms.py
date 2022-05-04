@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError,Regexp
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flaskDemo import db
-from flaskDemo.models import Users, Matches, getMatches, getMatchesFactory, Team, Opponent, Sport
+from flaskDemo.models import User, Matches, getMatches, getMatchesFactory, Team, Opponent, Sport
 from wtforms.fields import DateField
 
 ssns = Matches.query.with_entities(Matches.teamName).distinct()
@@ -73,36 +73,34 @@ class RemoveForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    userID = StringField('UserID',
+    username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
-    def validate_userID(self, userID):
-        user = Users.query.filter_by(userID=userID.data).first()
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
         if user:
-            raise ValidationError('That UserID is taken. Please choose a different one.')
+            raise ValidationError('That Username is taken. Please choose a different one.')
 
 
 class LoginForm(FlaskForm):
-    userID = StringField('UserID',
-                        validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 
 class UpdateAccountForm(FlaskForm):
-    userID = StringField('UserID',
+    username = StringField('UserID',
                            validators=[DataRequired(), Length(min=2, max=20)])
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
-    def validate_userID(self, userID):
-        if userID.data != current_user.userID:
-            user = Users.query.filter_by(userID=userID.data).first()
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError('That UserID is taken. Please choose a different one.')
 

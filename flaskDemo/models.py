@@ -8,10 +8,10 @@ db.Model.metadata.reflect(db.engine)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
-class Users(db.Model, UserMixin):
+class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     userID = db.Column(db.String(20), unique=True, nullable=False)
