@@ -132,7 +132,7 @@ def assign():
 '''
 
 @app.route("/matches/<matchID>")
-@login_required
+#@login_required
 def match(matchID):
     match = Matches.query.get_or_404([matchID])
     #return render_template('assign.html', title=str(match.teamName)+"_"+ str(match.oppName)+"_"+ str(match.sport), match=match, now=datetime.utcnow())
@@ -140,7 +140,7 @@ def match(matchID):
 
 #Update
 @app.route("/match/<matchID>/update", methods=['GET', 'POST'])
-@login_required
+#@login_required
 def update_match(matchID):
     #return "update page under construction"
     match = Matches.query.get_or_404(matchID)
@@ -148,15 +148,15 @@ def update_match(matchID):
 #matchID or teamName
     form = MatchUpdateForm()
     if form.validate_on_submit():          # notice we are are not passing the dnumber from the form
-        if currentMatch !=form.matchID.data:
-            match.score=form.score.data
-            match.arena=form.arena.data
-            match.matchType=form.matchType.data
-            match.status=form.status.data 
-            match.date=form.date.data
+        if currentMatch !=form.teamName.data:
             match.teamName=form.teamName.data
-            match.oppName=form.oppName.data
-            match.sport=form.sport.data
+        match.arena=form.arena.data
+        match.matchType=form.matchType.data
+        match.status=form.status.data 
+        match.date=form.date.data
+        match.score=form.score.data
+        match.oppName=form.oppName.data
+        match.sport=form.sport.data
         db.session.commit()
         flash('Your Match has been updated!', 'success')
         return redirect(url_for('match', matchID=matchID))
@@ -176,7 +176,7 @@ def update_match(matchID):
 
 #Delete
 @app.route("/matches/<matchID>/delete", methods=['POST'])
-@login_required
+#@login_required
 def delete_match(matchID):
     match = Matches.query.get_or_404(matchID)
     db.session.delete(match)
