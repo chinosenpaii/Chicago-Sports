@@ -19,8 +19,9 @@
                     {{ form.matchID(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-
-			<div class="form-group">
+			{% endif %}
+			
+            <div class="form-group">
                 {{ form.score.label(class="form-control-label") }}
                 {% if form.score.errors %}
                     {{ form.score(class="form-control form-control-lg is-invalid") }}
@@ -33,7 +34,7 @@
                     {{ form.score(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-            <div class="form-group">
+			<div class="form-group">
                 {{ form.arena.label(class="form-control-label") }}
                 {% if form.arena.errors %}
                     {{ form.arena(class="form-control form-control-lg is-invalid") }}
@@ -46,7 +47,7 @@
                     {{ form.arena(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-            <div class="form-group">
+			<div class="form-group">
                 {{ form.matchType.label(class="form-control-label") }}
                 {% if form.matchType.errors %}
                     {{ form.matchType(class="form-control form-control-lg is-invalid") }}
