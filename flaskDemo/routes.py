@@ -104,7 +104,7 @@ def account():
 def new_match():
     form = MatchForm()
     if form.validate_on_submit():
-        match = Matches(score=form.score.data, arena=form.arena.data, matchType=form.matchType.data, status=form.status.data, date=form.date.data, teamName=form.teamName.data, oppName=form.oppName.data, sport=form.sport.data)
+        match = Matches(matchID=form.matchID.data, score=form.score.data, arena=form.arena.data, matchType=form.matchType.data, status=form.status.data, date=form.date.data, teamName=form.teamName.data, oppName=form.oppName.data, sport=form.sport.data)
         db.session.add(match)
         db.session.commit()
         flash('You have added a new match!', 'success')

@@ -8,16 +8,21 @@ from flaskDemo import db
 from flaskDemo.models import User, Matches, getMatches, getMatchesFactory, Team, Opponent, Sport
 from wtforms.fields import DateField
 
-ssns = Matches.query.with_entities(Matches.teamName).distinct()
+match = Matches.query.with_entities(Matches.teamName, Matches.arena, Matches.sport).distinct()
+#team = Team.query.with_entities(Team.teamName).distinct()
+#opponent = Opponent.query.with_entities(Opponent.oppName).distinct()
+#sport = Sport.query.with_entities(Sport.sportName).distinct()
 #  or could have used ssns = db.session.query(Department.mgr_ssn).distinct()
 # for that way, we would have imported db from flaskDemo, see above
 
-myChoices2 = [(row[0],row[0]) for row in ssns]  # change
+myChoices4 = [(row[0],row[0]) for row in match]  # change
 results=list()
-for row in ssns:
+for row in (match):
     rowDict=row._asdict()
     results.append(rowDict)
 myChoices = [(row['teamName'],row['teamName']) for row in results]
+myChoices2 = [(row['arena'], row['arena']) for row in results]
+myChoices3 = [(row['sport'], row['sport']) for row in results]
 regex1='^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])'
 regex2='|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$'
 regex=regex1 + regex2
@@ -120,13 +125,13 @@ class MatchUpdateForm(FlaskForm):
 #    mgr_ssn = StringField("Manager's SSN", validators=[DataRequired(),Regexp('^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$', message="Please enter 9 digits for a social security.")])
 
 #  One of many ways to use SelectField or QuerySelectField.  Lots of issues using those fields!!
-    score = SelectField("Match Score", choices=myChoices)  # myChoices defined at top
-    arena = SelectField("Arena", choices=myChoices)
-    matchType = SelectField("Match Type", choices=myChoices)
-    status = SelectField("Status", choices=myChoices)
+    score = StringField("Match Score", validators=[DataRequired()])  # myChoices defined at top
+    arena = SelectField("Arena", choices=myChoices2)
+    matchType = StringField("Match Type", validators=[DataRequired()])
+    status = StringField("Status", validators=[DataRequired()])
     teamName = SelectField("Team Name", choices=myChoices)
-    oppName = SelectField("Opponents Name", choices=myChoices)
-    sport = SelectField("Sport", choices=myChoices)
+    oppName = StringField("Opponents Name", validators=[DataRequired()])
+    sport = SelectField("Sport", choices=myChoices3)
 # the regexp works, and even gives an error message
 #    mgr_start=DateField("Manager's Start Date:  yyyy-mm-dd",validators=[Regexp(regex)])
 #    mgr_start = DateField("Manager's Start Date")
