@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Matches` (
   `matchID` varchar(20) NOT NULL,
-  `score` int(11) NOT NULL,
+  `score` varchar(30) NOT NULL,
   `arena` varchar(15) NOT NULL,
   `matchType` varchar(15) NOT NULL,
-  `status` varchar(10) NOT NULL,
+  `status` varchar(30) NOT NULL,
   `date` date NOT NULL,
   `teamName` varchar(40) NOT NULL,
   `oppName` varchar(40) NOT NULL,
@@ -255,19 +255,6 @@ INSERT INTO `Team` (`teamName`, `leagueName`, `sport`) VALUES
 --
 -- Table structure for table `Users`
 --
-
-CREATE TABLE `Users` (
-  `UserID` varchar(5) NOT NULL,
-  `password` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `Users`
---
-
-INSERT INTO `Users` (`UserID`, `password`) VALUES
-('admin', 'Chicago6!');
-
 --
 -- Indexes for dumped tables
 --
