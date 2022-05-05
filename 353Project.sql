@@ -289,14 +289,6 @@ ALTER TABLE `Team`
   ADD KEY `sport` (`sport`);
 
 --
--- Indexes for table `Users`
---
-ALTER TABLE `Users`
-  ADD PRIMARY KEY (`UserID`);
-
---
--- Constraints for dumped tables
---
 
 --
 -- Constraints for table `Matches`
