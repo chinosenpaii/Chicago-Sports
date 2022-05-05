@@ -13,9 +13,6 @@ from datetime import datetime
 @app.route("/")
 @app.route("/home")
 def home():
-    '''
-    results= Matches.query.with_entities(Matches.matchID).all()
-    '''
     results= Matches.query.all()
     return render_template('match_home.html', outString = results)
     results2 = Matches.query.join(Team,Matches.teamName == Team.teamName) \
@@ -23,14 +20,11 @@ def home():
                .join(Opponent, Opponent.oppName == Matches.oppName).add_columns(Opponent.oppName)
     return render_template('assign_home.html', title='Join',joined_m_n=results2)
 
-   
-
 
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
 
-#Might not need but might to fill in user data as a requirement
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -45,6 +39,7 @@ def register():
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -97,7 +92,7 @@ def new_match():
 
 
 @app.route("/matches/<matchID>")
-#@login_required
+@login_required
 def match(matchID):
     match = Matches.query.get_or_404([matchID])
     #return render_template('assign.html', title=str(match.teamName)+"_"+ str(match.oppName)+"_"+ str(match.sport), match=match, now=datetime.utcnow())
@@ -105,14 +100,14 @@ def match(matchID):
 
 #Update
 @app.route("/match/<matchID>/update", methods=['GET', 'POST'])
-#@login_required
+@login_required
 def update_match(matchID):
     #return "update page under construction"
     match = Matches.query.get_or_404(matchID)
     currentMatch = match.matchID
 #matchID or teamName
     form = MatchUpdateForm()
-    if form.validate_on_submit():          # notice we are are not passing the dnumber from the form
+    if form.validate_on_submit():         
         if currentMatch !=form.teamName.data:
             match.teamName=form.teamName.data
         match.arena=form.arena.data
@@ -125,7 +120,7 @@ def update_match(matchID):
         db.session.commit()
         flash('Your Match has been updated!', 'success')
         return redirect(url_for('match', matchID=matchID))
-    elif request.method == 'GET':              # notice we are not passing the dnumber to the form
+    elif request.method == 'GET':             
         match.score=form.score.data
         match.arena=form.arena.data
         match.matchType=form.matchType.data
@@ -140,7 +135,7 @@ def update_match(matchID):
 
 #Delete
 @app.route("/matches/<matchID>/delete", methods=['POST'])
-#@login_required
+@login_required
 def delete_match(matchID):
     match = Matches.query.get_or_404(matchID)
     db.session.delete(match)
