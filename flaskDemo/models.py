@@ -7,42 +7,24 @@ from sqlalchemy import orm
 db.Model.metadata.reflect(db.engine)
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def load_user(username):
+    return User.query.get(int(username))
 
 
 class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.String(20), unique=True, nullable=False)
-    image = db.Column(db.String(20), nullable=False, default='default.jpg')
+    username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.userID}', '{self.image_file}')"
-
-
-class Post(db.Model):
-     __table_args__ = {'extend_existing': True}
-     id = db.Column(db.Integer, primary_key=True)
-     title = db.Column(db.String(100), nullable=False)
-     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-     content = db.Column(db.Text, nullable=False)
-     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-     def __repr__(self):
-         return f"Post('{self.title}', '{self.date_posted}')"
-
+        return f"User('{self.username}')"
 
 
 class Matches(db.Model):
     __table__ = db.Model.metadata.tables['Matches']
 
-'''    
-class Team(db.Model):
-    __table__ = db.Model.metadata.tables['Team']
-'''
+
 # used for query_factory
 def getMatches(columns=None):
     u = Matches.query
@@ -62,12 +44,7 @@ class Opponent(db.Model):
     
 class Sport(db.Model):
     __table__ = db.Model.metadata.tables['Sport']
-'''
-class Project(db.Model):
-    __table__ = db.Model.metadata.tables['opponent']
-class Matches(db.Model):
-    __table__ = db.Model.metadata.tables['']
-'''
+
     
 
   

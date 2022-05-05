@@ -32,10 +32,9 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <a class="nav-item nav-link text-dark" href="{{ url_for('account') }}">Account</a>
+                <a class="nav-item nav-link text-dark" href="{{ url_for('new_match') }}">New Match</a>
                 <a class="nav-item nav-link text-dark" href="{{ url_for('logout') }}">Logout</a>
               {% else %}
-                <a class="nav-item nav-link text-dark" href="{{ url_for('new_match') }}">New Match</a>
                 <a class="nav-item nav-link text-dark" href="{{ url_for('login') }}">Admin Login</a>
                 <a class="nav-item nav-link text-dark" href="{{ url_for('register') }}">Register</a> 
               {% endif %}
